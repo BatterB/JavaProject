@@ -2,6 +2,8 @@ package com.example.javaproject.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import com.example.javaproject.Application;
@@ -73,8 +75,8 @@ public class RegestrationController {
         String username = login_field.getText().trim();
         String password = password_field.getText().trim();
         String accountType = (String) account_type.getValue();
-        User user = new User(username,password,accountType);
-
+        int newId = dbHandler.getLastId()+1;
+        User user = new User(newId,username,password,accountType);
         if(!password.equals("") && !username.equals(""))
             if (password.equals(repeat_password.getText().trim()))
                 dbHandler.SignUpUser(user);

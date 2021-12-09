@@ -14,6 +14,9 @@ public class Application extends javafx.application.Application {
         stage.setTitle("Выживший");
         stage.setScene(scene);
         stage.show();
+
+
+
     }
 
     public static void main(String[] args) {

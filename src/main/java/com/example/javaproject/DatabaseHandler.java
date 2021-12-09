@@ -25,15 +25,16 @@ public class DatabaseHandler extends Configs{
     }
 
     public void SignUpUser(User user){
-        String insert = "INSERT INTO " + Const.USER_TABLE + "(" +
-                Const.USERS_ID + "," + Const.USERS_PASSWORD + "," + Const.USERS_TYPE + ")" +
-                "VALUES(?,?,?)";
+        String insert = "INSERT INTO " + Const.USER_TABLE + "(" + Const.USERS_ID + "," +
+                Const.USERS_USERNAME + "," + Const.USERS_PASSWORD + "," + Const.USERS_TYPE + ")" +
+                "VALUES(?,?,?,?)";
 
         try {
             PreparedStatement prSt = getDbConnetion().prepareStatement(insert);
-            prSt.setString(1,user.getUsername());
-            prSt.setString(2,user.getPassword());
-            prSt.setString(3,user.getAccountType());
+            prSt.setInt(1,user.getId());
+            prSt.setString(2,user.getUsername());
+            prSt.setString(3,user.getPassword());
+            prSt.setString(4,user.getAccountType());
 
             prSt.executeUpdate();
         } catch (SQLException e) {
@@ -48,7 +49,7 @@ public class DatabaseHandler extends Configs{
         ResultSet resSet = null;
 
         String select = "SELECT * FROM " +Const.USER_TABLE + " WHERE " +
-                Const.USERS_ID + "=? AND "+ Const.USERS_PASSWORD + "=?";
+                Const.USERS_USERNAME + "=? AND "+ Const.USERS_PASSWORD + "=?";
 
         try {
             PreparedStatement prSt = getDbConnetion().prepareStatement(select);
@@ -62,5 +63,25 @@ public class DatabaseHandler extends Configs{
             e.printStackTrace();
         }
         return resSet;
+    }
+
+    public int getLastId() {
+        ResultSet resSet;
+        int id=0;
+        try {
+            String select ="SELECT MAX(id) AS max_id FROM "+ Const.USER_TABLE;
+            PreparedStatement prSt = null;
+            prSt = getDbConnetion().prepareStatement(select);
+            resSet = prSt.executeQuery();
+            if (resSet.next()) {
+                id = resSet.getInt("max_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return id;
     }
 }

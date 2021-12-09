@@ -56,24 +56,23 @@ public class Controller {
 
         SignUpButton.setOnAction(event -> {
             SignUpButton.getScene().getWindow().hide();
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Application.class.getResource("registration-window.fxml"));
-
-            try{
-                loader.load();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
+            ChangeWindow("registration-window.fxml");
         });
     }
+    private void ChangeWindow(String name){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Application.class.getResource(name));
 
+        try{
+            loader.load();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
     private void loginUser(String loginText, String passwordText) {
         DatabaseHandler dbHandler = new DatabaseHandler();
 
@@ -92,7 +91,8 @@ public class Controller {
             }
 
             if (counter>=1){
-                System.out.println("success");
+                LoginButton.getScene().getWindow().hide();
+                ChangeWindow("main-window.fxml");
             }
             else{
                 Shake userLoginAnim = new Shake(login_field);

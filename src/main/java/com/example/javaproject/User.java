@@ -1,6 +1,7 @@
 package com.example.javaproject;
 
 public class User {
+    private int id;
     private String username;
     private String password;
     private String accountType;
@@ -8,10 +9,19 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String accountType) {
+    public User(int id, String username, String password, String accountType) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.accountType = accountType;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
