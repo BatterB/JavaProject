@@ -1,10 +1,7 @@
 package com.example.javaproject;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.time.LocalDate;
 
 public class DatabaseHandler extends Configs{
     Connection dbConnetion;
@@ -64,7 +61,6 @@ public class DatabaseHandler extends Configs{
         }
         return resSet;
     }
-
     public int getLastId() {
         ResultSet resSet;
         int id=0;
@@ -81,7 +77,25 @@ public class DatabaseHandler extends Configs{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         return id;
     }
+    public void newAppointment(LocalDate date,String doctorType){
+        String insert = "INSERT INTO " + Const.APPOINT_TABLE + "(" + Const.USERS_ID + "," +
+                Const.DOCTOR_NAME + "," + Const.DOCTOR_TYPE + "," + Const.DATE_APPOINT + ")" +
+                "VALUES(?,?,?,?)";
+        try {
+            PreparedStatement prSt = getDbConnetion().prepareStatement(insert);
+            prSt.setInt(1,getLastId());
+            prSt.setString(2,doctorType);
+            prSt.setString(3,doctorType);
+            prSt.setDate(4, Date.valueOf(date));
+
+            prSt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

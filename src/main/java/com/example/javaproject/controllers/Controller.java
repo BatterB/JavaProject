@@ -63,11 +63,13 @@ public class Controller {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Application.class.getResource(name));
 
-        try{
+
+        try {
             loader.load();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
