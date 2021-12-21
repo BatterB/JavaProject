@@ -61,11 +61,11 @@ public class DatabaseHandler extends Configs{
         }
         return resSet;
     }
-    public int getLastId() {
+    public int getLastId(String table) {
         ResultSet resSet;
         int id=0;
         try {
-            String select ="SELECT MAX(id) AS max_id FROM "+ Const.USER_TABLE;
+            String select ="SELECT MAX(id) AS max_id FROM "+ table;
             PreparedStatement prSt = null;
             prSt = getDbConnetion().prepareStatement(select);
             resSet = prSt.executeQuery();
@@ -85,7 +85,7 @@ public class DatabaseHandler extends Configs{
                 "VALUES(?,?,?,?)";
         try {
             PreparedStatement prSt = getDbConnetion().prepareStatement(insert);
-            prSt.setInt(1,getLastId());
+            prSt.setInt(1,getLastId("users"));
             prSt.setString(2,doctorType);
             prSt.setString(3,doctorType);
             prSt.setDate(4, Date.valueOf(date));

@@ -75,7 +75,7 @@ public class RegestrationController {
         String username = login_field.getText().trim();
         String password = password_field.getText().trim();
         String accountType = (String) account_type.getValue();
-        int newId = dbHandler.getLastId()+1;
+        int newId = dbHandler.getLastId("appointments")+1;
         User user = new User(newId,username,password,accountType);
         if(!password.equals("") && !username.equals(""))
             if (password.equals(repeat_password.getText().trim()))

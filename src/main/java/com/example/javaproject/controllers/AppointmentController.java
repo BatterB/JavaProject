@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.time.LocalDate;
@@ -33,36 +34,41 @@ public class AppointmentController {
     @FXML
     private GridPane GridPanel;
 
+
+
     @FXML
     void initialize() {
-        AddNewAppoint.setOnAction(event -> {
-            GridPanel.getChildren().clear();
-            ObservableList<String> observableList = FXCollections.observableArrayList("Хирург", "Кардиолог", "Дантист", "Психиатр", "Дерматолог");
-
-            Box = new ComboBox(observableList);
-            Date = new DatePicker();
-            Send = new Button("Записаться");
-
-            Box.setTranslateY(-35);
-            Box.setTranslateX(30);
-            Send.setTranslateY(40);
-            Send.setTranslateX(40);
-            Send.setId("Send");
-
-            GridPanel.add(Box, row, column);
-            GridPanel.add(Date, row, column);
-            GridPanel.add(Send, row, column);
-            column++;
-            if (column > 4) {
-                column = 0;
-                row++;
-            }
-            System.out.println(Send);
-            NewAppoint();
-        });
+        AddNewAppoint.setOnAction(event -> AppointBlank());
     }
 
-    void NewAppoint(){
+    void AppointBlank()
+    {
+        System.out.println(GridPanel.getChildren());
+        AddNewAppoint.setVisible(false);
+        ObservableList<String> observableList = FXCollections.observableArrayList("Хирург", "Кардиолог", "Дантист", "Психиатр", "Дерматолог");
+
+        Box = new ComboBox(observableList);
+        Date = new DatePicker();
+        Send = new Button("Записаться");
+
+        Box.setTranslateY(10);
+        Box.setTranslateX(40);
+        Date.setTranslateY(45);
+        Send.setTranslateY(80);
+        Send.setTranslateX(40);
+        Send.setId("Send");
+
+        AnchorPane pane = new AnchorPane();
+
+        pane.getChildren().add(Box);
+        pane.getChildren().add(Date);
+        pane.getChildren().add(Send);
+        GridPanel.add(pane, row, column);
+
+        NewAppoint(pane);
+    }
+
+    void NewAppoint(AnchorPane pane){
         Send.setOnAction(event ->{
             LocalDate calendar = Date.getValue();
             String boxValue = (String) Box.getValue();
@@ -87,13 +93,25 @@ public class AppointmentController {
             }catch (NullPointerException e){
                 e.printStackTrace();
             }
-            GridPanel.getChildren().clear();
+
+            pane.getChildren().clear();
             Label doctor = new Label("Врач: "+ boxValue);
             Label date = new Label("Время приема: "+ calendar);
-            GridPanel.add(doctor, row, column);
-            GridPanel.add(date, row, column);
-            doctor.setStyle("-fx-font-size: 24px");
-            date.setStyle("-fx-font-size: 12px");
+            pane.getChildren().add(doctor);
+            pane.getChildren().add(date);
+            doctor.setTranslateY(-5);
+            doctor.setStyle("-fx-font-size: 24px; -fx-text-fill: white");
+            date.setTranslateY(40);
+            date.setStyle("-fx-font-size: 12px; -fx-text-fill: white");
+            column++;
+            if (column > 4) {
+                column = 0;
+                row++;
+            }
+            AddNewAppoint = new Button("Добавить запись");
+            GridPanel.add(AddNewAppoint, row, column);
+            AddNewAppoint.setOnAction(event1->AppointBlank());
+            AddNewAppoint.setVisible(true);
     }
         );}
 }
